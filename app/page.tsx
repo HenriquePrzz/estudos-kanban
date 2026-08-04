@@ -1,83 +1,26 @@
-"use client"
+import { getMilestones } from "@/app/actions/milestones"
+import { RoadmapTimeline } from "@/components/roadmap-timeline"
+import { connection } from "next/server"
 
-import { useEffect, useState } from "react"
+export default async function RoadmapPage() {
+  // Impede que o banco seja consultado durante o build
+  await connection()
 
-const frases = [
-  "Lembre por que você começou.",
-  "Todo progresso começa com uma decisão.",
-  "A constância transforma intenção em resultado.",
-  "Aprenda hoje o que vai construir seu amanhã.",
-  "Um passo de cada vez ainda é progresso.",
-]
-
-export default function HomePage() {
-  const [indiceAtual, setIndiceAtual] = useState(0)
-  const [fraseVisivel, setFraseVisivel] = useState(true)
-
-  useEffect(() => {
-    let temporizadorTroca: ReturnType<typeof setTimeout> | undefined
-
-    const intervalo = setInterval(() => {
-      setFraseVisivel(false)
-
-      temporizadorTroca = setTimeout(() => {
-        setIndiceAtual((indiceAnterior) => {
-          return (indiceAnterior + 1) % frases.length
-        })
-
-        setFraseVisivel(true)
-      }, 500)
-    }, 6000)
-
-    return () => {
-      clearInterval(intervalo)
-
-      if (temporizadorTroca) {
-        clearTimeout(temporizadorTroca)
-      }
-    }
-  }, [])
+  const milestones = await getMilestones()
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
-      {/* Fundo topográfico */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-100"
-        style={{
-          backgroundImage: "url('/topografia.png')",
-        }}
-      />
+    <div className="mx-auto max-w-2xl px-6 py-8">
+      <header className="mb-8">
+        <h1 className="text-2xl font-semibold text-foreground">
+          Roadmap
+        </h1>
 
-      {/* Vinheta */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(23,23,23,0.2) 0%, rgba(23,23,23,0.85) 100%)",
-        }}
-      />
+        <p className="mt-1 text-sm text-muted-foreground">
+          Seus marcos em uma linha do tempo. Clique no indicador para mudar o status.
+        </p>
+      </header>
 
-      {/* Frase principal */}
-      <h1
-        aria-live="polite"
-        className={`
-          relative z-10 max-w-5xl
-          text-balance text-center
-          font-serif text-4xl leading-tight
-          text-foreground
-          transition-all duration-500 ease-in-out
-          sm:text-5xl md:text-6xl lg:text-7xl
-          ${
-            fraseVisivel
-              ? "translate-y-0 opacity-100"
-              : "translate-y-3 opacity-0"
-          }
-        `}
-      >
-        {frases[indiceAtual]}
-      </h1>
+      <RoadmapTimeline initialMilestones={milestones} />
     </div>
   )
 }
