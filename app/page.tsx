@@ -15,7 +15,7 @@ export default function HomePage() {
   const [fraseVisivel, setFraseVisivel] = useState(true)
 
   useEffect(() => {
-    let temporizadorTroca: ReturnType<typeof setTimeout>
+    let temporizadorTroca: ReturnType<typeof setTimeout> | undefined
 
     const intervalo = setInterval(() => {
       setFraseVisivel(false)
@@ -31,7 +31,10 @@ export default function HomePage() {
 
     return () => {
       clearInterval(intervalo)
-      clearTimeout(temporizadorTroca)
+
+      if (temporizadorTroca) {
+        clearTimeout(temporizadorTroca)
+      }
     }
   }, [])
 
@@ -56,14 +59,13 @@ export default function HomePage() {
         }}
       />
 
-      {/* Frase que muda automaticamente */}
+      {/* Frase principal */}
       <h1
+        aria-live="polite"
         className={`
-          relative z-10
-          max-w-5xl
+          relative z-10 max-w-5xl
           text-balance text-center
-          font-serif
-          text-4xl leading-tight
+          font-serif text-4xl leading-tight
           text-foreground
           transition-all duration-500 ease-in-out
           sm:text-5xl md:text-6xl lg:text-7xl
