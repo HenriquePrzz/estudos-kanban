@@ -21,7 +21,7 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
-  title: 'Meu Foco',
+  title: 'SoloLeveling',
   description: 'Kanban de estudos, roadmap e um lembrete do porquê você começou.',
   generator: 'v0.app',
 }

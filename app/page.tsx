@@ -55,7 +55,7 @@ export default function HomePage() {
           bg-cover
           bg-center
           bg-no-repeat
-          opacity-[0.04]
+          opacity-[0.08]
           invert
           mix-blend-screen
         "

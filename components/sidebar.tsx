@@ -1,14 +1,15 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, KanbanSquare, Map } from "lucide-react"
+import { Home, KanbanSquare, Timer } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const items = [
   { href: "/", label: "Início", icon: Home },
   { href: "/kanban", label: "Kanban", icon: KanbanSquare },
-  { href: "/roadmap", label: "Roadmap", icon: Map },
+  { href: "/pomodoro", label: "Pomodoro", icon: Timer },
 ]
 
 export function Sidebar() {
@@ -16,14 +17,20 @@ export function Sidebar() {
 
   return (
     <aside className="sticky top-0 flex h-screen w-16 flex-col border-r border-sidebar-border bg-sidebar py-6 md:w-56">
-      <div className="mb-8 px-4 md:px-6">
-        <span className="hidden font-serif text-2xl leading-none text-foreground md:block">
-          Meu Foco
-        </span>
-        <span className="mx-auto block h-8 w-8 rounded-md bg-foreground/10 text-center font-serif text-lg leading-8 text-foreground md:hidden">
-          F
-        </span>
-      </div>
+    <div className="mb-8 flex flex-col items-center px-2 md:px-4">
+      <Image
+        src="Waifu.png"
+        alt="Solo Leveling"
+        width={220}
+        height={300}
+        priority
+        className="h-auto w-full max-w-[120px] object-contain"
+      />
+
+    <span className="mt-3 hidden text-center font-serif text-3xl leading-tight text-foreground md:block">
+        Solo Leveling
+      </span>
+    </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-2 md:px-3">
         {items.map(({ href, label, icon: Icon }) => {

@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core"
+import { integer, pgTable, serial, text, timestamp, date } from "drizzle-orm/pg-core"
 
 export const cards = pgTable("cards", {
   id: serial("id").primaryKey(),
@@ -18,5 +18,36 @@ export const milestones = pgTable("milestones", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 })
 
+export const studyDays = pgTable("study_days", {
+  id: serial("id").primaryKey(),
+
+  studyDate: date("study_date", {
+    mode: "string",
+  })
+    .notNull()
+    .unique(),
+
+  sessions: integer("sessions")
+    .notNull()
+    .default(1),
+
+  focusMinutes: integer("focus_minutes")
+    .notNull()
+    .default(0),
+
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+})
+
+export type StudyDay = typeof studyDays.$inferSelect
 export type Card = typeof cards.$inferSelect
 export type Milestone = typeof milestones.$inferSelect
