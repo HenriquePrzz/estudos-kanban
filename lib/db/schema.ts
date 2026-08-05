@@ -9,6 +9,24 @@ export const cards = pgTable("cards", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 })
 
+export const cardComments = pgTable("card_comments", {
+  id: serial("id").primaryKey(),
+
+  cardId: integer("card_id")
+    .notNull()
+    .references(() => cards.id, {
+      onDelete: "cascade",
+    }),
+
+  content: text("content").notNull(),
+
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+})
+
 export const milestones = pgTable("milestones", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -51,3 +69,4 @@ export const studyDays = pgTable("study_days", {
 export type StudyDay = typeof studyDays.$inferSelect
 export type Card = typeof cards.$inferSelect
 export type Milestone = typeof milestones.$inferSelect
+export type CardComment = typeof cardComments.$inferSelect
